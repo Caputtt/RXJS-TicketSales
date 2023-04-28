@@ -1,0 +1,16 @@
+:host {
+  min-width: 300px;
+  width: 300px;
+  flex-basis: 300px;
+  border: 1px solid grey;
+  height: 100%;
+}
+.aside-container {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+}
+.aside-title {
+  font-weight: 700;
+  padding-bottom: .5rem;
+}
