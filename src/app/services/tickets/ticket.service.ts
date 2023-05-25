@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
 import {TicketRestService} from "../rest/ticket-rest.service";
 import {map, Observable, Subject} from "rxjs";
-import {INearestTour, ITour, ITourLocation, ITourTypeSelect} from "../../models/tours"
+import {ICustomTicketData, INearestTour, ITour, ITourLocation, ITourTypeSelect} from "../../models/tours"
 
 @Injectable({
   providedIn: 'root'
 })
 export class TicketService {
   private ticketSubject = new Subject<ITourTypeSelect>();
+
   readonly ticketType$ = this.ticketSubject.asObservable(); //1 variant
 
 
-  constructor(private ticketRestService: TicketRestService) { }
+  constructor(private ticketServiceRest: TicketRestService) { }
 
-    updateTour(type: ITourTypeSelect): void {
-    this.ticketSubject.next(type);
-  }
+
 /**Способ преобразования данных, полученных с сервера, до подписки - оператор pipe**/
     getTickets(): Observable<ITour[]> {
-    return this.ticketRestService.getTickets().pipe(map(
+    return this.ticketServiceRest.getTickets().pipe(map(
 
       (value) => {
         const singleTours = value.filter((el) => el.type === "single");
@@ -27,22 +26,6 @@ export class TicketService {
 
     ));
   }
-
-  getError():Observable<any> {
-    return this.ticketRestService.getRestError();
-  }
-
-  getNearestTours():Observable<INearestTour[]> {
-    return this.ticketRestService.getNearestTickets();
-  }
-  // getNearestTicketsById(id:string):Observable<INearestTour[]> {
-  //   return this.ticketRestService.getNearestTicketsById(id);
-  // }
-
-  getToursLocation():Observable<ITourLocation[]> {
-    return this.ticketRestService.getLocationList();
-  }
-
   /**
    *  вариант доступа к Observable
    */
@@ -50,8 +33,39 @@ export class TicketService {
   //   return this.ticketSubject.asObservable();
   // } //2 variant
 
+  updateTour(type: ITourTypeSelect): void {
+    this.ticketSubject.next(type);
+  }
+
+  getError():Observable<any> {
+    return this.ticketServiceRest.getRestError();
+  }
+
+  getNearestTours():Observable<INearestTour[]> {
+    return this.ticketServiceRest.getNearestTickets();
+  }
+
+  getToursLocation():Observable<ITourLocation[]> {
+    return this.ticketServiceRest.getLocationList();
+  }
+
+  transformData (data: INearestTour[], regions: ITourLocation[]): ICustomTicketData[] {
+    const newTicketData: ICustomTicketData[] = [];
+    data.forEach((el) => {
+      const newEl = <ICustomTicketData>{...el};
+      newEl.region = <ICustomTicketData>regions.find((region) => el.locationId === region.id) || {};
+      newTicketData.push(newEl);
+      console.log(newTicketData)
+    })
+    return newTicketData;
+  }
+
+  getRandomNearestEvent(type: number): Observable<INearestTour> {
+    return this.ticketServiceRest.getRandomNearestEvent(type);
+  }
+
   sendTour(postData: any) {
-    return this.ticketRestService.sendTour(postData);
+    return this.ticketServiceRest.sendTour(postData);
 
   }
 }

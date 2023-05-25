@@ -25,16 +25,26 @@ export class TicketRestService {
     return this.http.get<INearestTour[]>(`https://62b9e756ff109cd1dc9dae16.mockapi.io/apiv/v1/nearestTours/`)
   }
 
-  // getNearestTicketsById(id: string): Observable<INearestTour[]> {
-  //   return this.http.get<INearestTour[]>(`https://62b9e756ff109cd1dc9dae16.mockapi.io/apiv/v1/nearestTours/${id}`)
-  // }
-
   getLocationList(): Observable<ITourLocation[]> {
     return this.http.get<ITourLocation[]>(`https://62b9e756ff109cd1dc9dae16.mockapi.io/apiv/v1/location/`)
+  }
+
+  getRandomNearestEvent (type: number): Observable<INearestTour> {
+    switch (type) {
+      case 0:
+        return this.http.get<INearestTour>('/assets/mocks/nearestTours1.json');
+      case 1:
+        return this.http.get<INearestTour>('/assets/mocks/nearestTours2.json');
+      case 2:
+        return this.http.get<INearestTour>('/assets/mocks/nearestTours3.json');
+      default:
+        return this.http.get<INearestTour>('/assets/mocks/nearestTours2.json');
+    }
   }
 
   sendTour(data: any): Observable<any> {
     return this.http.post<any>(`https://62b9e756ff109cd1dc9dae16.mockapi.io/apiv/v1/locati1on/`, data)
   }
+
 }
 

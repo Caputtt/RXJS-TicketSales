@@ -15,7 +15,7 @@ export class AuthService {
     this.checkAuthInStorage();
   }
 
-  checkUser(user: IUser): boolean {
+  checkAuthUser(user: IUser): boolean {
     const isUserExists = this.usersStorage.find((el) => el.login === user.login);
 
     let isUserSavedInStore = window.localStorage.getItem("user_"+user?.login);

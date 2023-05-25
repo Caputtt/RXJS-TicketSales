@@ -89,16 +89,19 @@
     </div>
     <div class="m-5 " >
       <h4 class="ticket-item-title">Похожие туры</h4>
-<!--      <div>-->
-<!--        <input #ticketSearchInput [(ngModel)]="searchText" type="text" pInputText />-->
-<!--      </div>-->
+      <div class="m-3 d-flex flex-row justify-content-center align-items-center">
+        <input #ticketSearch
+               [(ngModel)]="ticketSearchValue"
+               type="text"
+               pInputText/>
+      </div>
       <p-carousel [value]="nearestTours" *ngIf="nearestTours">
-        <ng-template pTemplate="header">
-        </ng-template>
+<!--        <ng-template pTemplate="header">-->
+<!--        </ng-template>-->
         <ng-template let-tour pTemplate="item">
-          <h4>{{tour.name}}</h4>
+          <h4>{{tour.name}}/{{tour.region.name}}</h4>
             <div class="ticket-img-nearest">
-            <img class="w-100 h-100" src="/assets/img/{{tour.img}}" alt="">
+            <img class="w-100 h-100" src="/assets/img/{{tour.img}}" alt=""/>
           </div>
         </ng-template>
       </p-carousel>

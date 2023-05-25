@@ -3,4 +3,5 @@ export interface IUser {
     email?: string,
     psw: string,
     cardNumber?: string,
+    id: string,
 }

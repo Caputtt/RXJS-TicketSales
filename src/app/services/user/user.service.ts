@@ -33,6 +33,10 @@ export class UserService {
       }
     }
   }
+  setToStore(token: string) {
+    window.localStorage.setItem("token", token);
+  }
+
 
   removeUser() {
     this.user = null;
