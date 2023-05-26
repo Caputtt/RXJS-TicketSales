@@ -39,6 +39,12 @@ export class TicketListComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     ngOnInit(): void {
+
+    //sub on update ticket
+      this.ticketService.ticketUpdateSubject$.subscribe((data) => {
+        this.tickets = data;
+      })
+
     this.ticketService.getTickets()
       .subscribe(
       (data) => {
@@ -51,10 +57,9 @@ export class TicketListComponent implements OnInit, AfterViewInit, OnDestroy {
             this.ticketsFiltered = [...data];
             this.ticketsCount=this.tickets.length;
             this.ticketsFilteredCount=this.ticketsCount;
-
-
       }
     )
+
     this.tourUnsubscription = this.ticketService.ticketType$
       .subscribe((data: ITourTypeSelect) => {
       console.log('data', data)

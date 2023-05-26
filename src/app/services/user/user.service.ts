@@ -7,41 +7,57 @@ import {Router} from "@angular/router";
 })
 export class UserService {
   private user: IUser|null;
-  private token: string;
+  private token: string|null;
 
   constructor(private readonly router:Router) { }
 
   getUser(): IUser|null{
     return this.user;
-  };
+  }
+
   setUser(user: IUser|null): void {
     this.user = user;
-  };
+  }
 
   setToken(token: string): void {
     this.token = token;
-    window.localStorage.setItem('ticketsTour-token', this.token)
   }
 
-  getToken(): string | void {
+  getToken(): string | null {
+    // if (this.token) {
+      return this.token;
+    // } else {
+    //   const isTokenInStorage = window.localStorage.getItem('userToken');
+    //   if (isTokenInStorage) {
+    //     return isTokenInStorage;
+    //   }
+    // }
+  }
+  setToStore(token: string) {
+    window.localStorage.setItem("userToken", token);
+  }
+
+  getFromStore() {
+    return window.localStorage.getItem('userToken');
+  }
+
+  getAllToken(): string | null {
     if (this.token) {
       return this.token;
     } else {
-      const isTokenInStorage = window.localStorage.getItem('ticketsTour-token');
-      if (isTokenInStorage) {
-        return isTokenInStorage;
-      }
+      return this.getFromStore()
     }
   }
-  setToStore(token: string) {
-    window.localStorage.setItem("token", token);
+
+
+  removeUser(): void {
+    this.user = null;
+    this.token = null;
+    window.localStorage.removeItem('userToken')
+
   }
 
-
-  removeUser() {
-    this.user = null;
-    this.token = '';
-    window.localStorage.setItem('ticketsTour-token', this.token)
-
-  };
+  updateUser(user: IUser): void{
+    this.user = user;
+  }
 }

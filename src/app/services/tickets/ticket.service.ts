@@ -7,9 +7,13 @@ import {ICustomTicketData, INearestTour, ITour, ITourLocation, ITourTypeSelect} 
   providedIn: 'root'
 })
 export class TicketService {
-  private ticketSubject = new Subject<ITourTypeSelect>();
+  private randomEndpoints = ["nearestTours1.json", "nearestTours2.json", "nearestTours3.json"];
 
+  private ticketSubject = new Subject<ITourTypeSelect>();
   readonly ticketType$ = this.ticketSubject.asObservable(); //1 variant
+
+  private ticketUpdateSubject = new Subject<ITour[]>();
+  readonly ticketUpdateSubject$ = this.ticketUpdateSubject.asObservable();
 
 
   constructor(private ticketServiceRest: TicketRestService) { }
@@ -17,14 +21,8 @@ export class TicketService {
 
 /**Способ преобразования данных, полученных с сервера, до подписки - оператор pipe**/
     getTickets(): Observable<ITour[]> {
-    return this.ticketServiceRest.getTickets().pipe(map(
+    return this.ticketServiceRest.getTickets();
 
-      (value) => {
-        const singleTours = value.filter((el) => el.type === "single");
-        return value.concat(singleTours);
-      }
-
-    ));
   }
   /**
    *  вариант доступа к Observable
@@ -35,6 +33,10 @@ export class TicketService {
 
   updateTour(type: ITourTypeSelect): void {
     this.ticketSubject.next(type);
+  }
+
+  updateTicketList(data: ITour[]) {
+    this.ticketUpdateSubject.next(data);
   }
 
   getError():Observable<any> {
@@ -64,10 +66,16 @@ export class TicketService {
     return this.ticketServiceRest.getRandomNearestEvent(type);
   }
 
-  sendTour(postData: any) {
-    return this.ticketServiceRest.sendTour(postData);
+  sendTour(data: any): Observable<any> {
+    return this.ticketServiceRest.sendTour(data);
 
   }
+
+  getTicketById(id: string): Observable<ITour> {
+    return this.ticketServiceRest.getTicketById(id);
+  }
+
+
 }
 
 

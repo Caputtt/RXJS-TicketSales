@@ -57,7 +57,7 @@ export class AuthorizationComponent implements OnInit, OnDestroy, OnChanges {
 
   }
 
-  onAuth(ev: Event): void | boolean {
+  onAuth(ev: Event): void {
     const authUser: IUser = {
       id: "",
       psw: this.psw,
@@ -75,14 +75,12 @@ export class AuthorizationComponent implements OnInit, OnDestroy, OnChanges {
       //     this.messageService.add({severity:'error', summary: 'Проверьте введенные данные'});
       //   }
       // }
-      this.http.post<IUser>('http://localhost:3000/users/' + authUser.login, authUser).subscribe((data: IUser) => {
-
+      this.http.post<{access_token: string, id: string}>('http://localhost:3000/users/' +authUser.login, authUser).subscribe((data) => {
+        authUser.id = data.id;
         this.userService.setUser(authUser);
-        const token: string = 'user-private-token' + data.id;
+        const token: string = data.access_token;
         this.userService.setToken(token);
         this.userService.setToStore(token);
-
-
         this.router.navigate(['tickets/ticket-list']);
 
       }, (err: HttpErrorResponse) => {

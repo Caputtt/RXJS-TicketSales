@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {INearestTour, ITour, ITourLocation} from "../../models/tours";
 import {UserService} from "../user/user.service";
+import {IOrder} from "../../models/order";
 
 
 @Injectable({
@@ -15,8 +16,9 @@ export class TicketRestService {
               ) { }
 
   getTickets(): Observable<ITour[]> {
-    this.userService.setToken('user-private-token');
-    return this.http.get<ITour[]>('https://62b9e756ff109cd1dc9dae16.mockapi.io/apiv/v1/tours/');
+    // this.userService.setToken('user-private-token');
+    // return this.http.get<ITour[]>('https://62b9e756ff109cd1dc9dae16.mockapi.io/apiv/v1/tours/');
+    return this.http.get<ITour[]>("http://localhost:3000/tours/");
   }
   getRestError(): Observable<any> {
     return this.http.get<any>('https://62b9e756ff109cd1dc9dae16.mockapi.io/apiv/v1/tours/notFound');
@@ -42,8 +44,12 @@ export class TicketRestService {
     }
   }
 
-  sendTour(data: any): Observable<any> {
-    return this.http.post<any>(`https://62b9e756ff109cd1dc9dae16.mockapi.io/apiv/v1/locati1on/`, data)
+  sendTour(data: IOrder): Observable<any> {
+    return this.http.post(`http://localhost:3000/order/`, data);
+  }
+
+  getTicketById(id: string): Observable<ITour> {
+    return this.http.get<ITour>("http://localhost:3000/tours/"+id);
   }
 
 }
