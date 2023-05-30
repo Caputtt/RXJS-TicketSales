@@ -14,7 +14,7 @@ export class TicketsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public updateSelectedType(ev: IMenuType): void {
+  updateSelectedType(ev: IMenuType): void {
     this.selectedType = ev;
   }
 

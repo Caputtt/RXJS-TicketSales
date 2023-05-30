@@ -38,72 +38,72 @@ export class TicketListComponent implements OnInit, AfterViewInit, OnDestroy {
               private router: Router) { }
 
 
-    ngOnInit(): void {
+  ngOnInit(): void {
 
     //sub on update ticket
-      this.ticketService.ticketUpdateSubject$.subscribe((data) => {
-        this.tickets = data;
-      })
+    this.ticketService.ticketUpdateSubject$.subscribe((data) => {
+      this.tickets = data;
+    })
 
     this.ticketService.getTickets()
       .subscribe(
-      (data) => {
-            this.tickets = data;
+        (data: ITour[]) => {
+          this.tickets = data;
 
-            this.ticketsCopy = [...this.tickets];
+          this.ticketsCopy = [...this.tickets];
 
-            this.ticketsStorage.setStorage(data);
+          this.ticketsStorage.setStorage(data);
 
-            this.ticketsFiltered = [...data];
-            this.ticketsCount=this.tickets.length;
-            this.ticketsFilteredCount=this.ticketsCount;
-      }
-    )
+          this.ticketsFiltered = [...data];
+          this.ticketsCount=this.tickets.length;
+          this.ticketsFilteredCount=this.ticketsCount;
+        }
+      )
 
     this.tourUnsubscription = this.ticketService.ticketType$
       .subscribe((data: ITourTypeSelect) => {
-      console.log('data', data)
+        console.log('data', data)
 
-      let ticketType: string;
-      switch (data.value) {
-        case "single":
-          this.tickets = this.ticketsCopy.filter((el) => el.type === "single");
-          break;
-        case "multi":
-          this.tickets = this.ticketsCopy.filter((el) => el.type === "multi");
-          break;
-        case "all":
-          this.tickets = [...this.ticketsCopy];
-          break;
-      }
+        let ticketType: string;
+        switch (data.value) {
+          case "single":
+            this.tickets = this.ticketsCopy.filter((el) => el.type === "single");
+            break;
+          case "multi":
+            this.tickets = this.ticketsCopy.filter((el) => el.type === "multi");
+            break;
+          case "all":
+            this.tickets = [...this.ticketsCopy];
+            break;
+        }
         this.ticketsFiltered = [...this.tickets];
 
-      if (data.date) {
-        const dateWithoutTime = new Date(data.date).toISOString().split('T');
-        const dateValue = dateWithoutTime[0]
-        console.log('dateValue',dateValue)
-        this.tickets = this.ticketsCopy.filter((el) => el.date === dateValue);
-      }
+        if (data.date) {
+          const dateWithoutTime = new Date(data.date).toISOString().split('T');
+          const dateValue = dateWithoutTime[0]
+          console.log('dateValue',dateValue)
+          this.tickets = this.ticketsCopy.filter((el) => el.date === dateValue);
+        }
 
-    setTimeout(() => {
-      this.blockDirective.updateItems();
-      this.blockDirective.initStyle(0);  // сбрасываем индекс на 0 элемент
-     });
-    });
+        setTimeout(() => {
+          this.blockDirective.updateItems();
+          this.blockDirective.initStyle(0);  // сбрасываем индекс на 0 элемент
+        });
+      });
   }
 
-    ngAfterViewInit(): void {
-     // const fromEventObserver = fromEvent(this.ticketSearchInput.nativeElement,'keyup');
-     //
-     // this.searchTicketSub = fromEventObserver.pipe(
-     //
-     //    debounceTime(200)).subscribe((ev: any)=>{
-     //      if (this.ticketSearchValue) {
-     //        this.tickets = this.ticketsCopy.filter((el) => el.name.includes(this.ticketSearchValue));
-     //      } else {
-     //        this.tickets = [...this.ticketsCopy];
-     //      }
-     //    });
+  ngAfterViewInit(): void {
+    // const fromEventObserver = fromEvent(this.ticketSearchInput.nativeElement,'keyup');
+    //
+    // this.searchTicketSub = fromEventObserver.pipe(
+    //
+    //    debounceTime(200)).subscribe((ev: any)=>{
+    //      if (this.ticketSearchValue) {
+    //        this.tickets = this.ticketsCopy.filter((el) => el.name.includes(this.ticketSearchValue));
+    //      } else {
+    //        this.tickets = [...this.ticketsCopy];
+    //      }
+    //    });
   }
 
   ngOnDestroy() {

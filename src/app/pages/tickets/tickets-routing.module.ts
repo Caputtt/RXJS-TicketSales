@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { TicketsComponent } from "./tickets.component";
 import {TicketListComponent} from "./ticket-list/ticket-list.component";
+import {OrderComponent} from "../order/order.component";
 
 
 const routes: Routes = [
@@ -15,24 +16,21 @@ const routes: Routes = [
         component: TicketListComponent,
       },
       {
+        path: 'order',
+        component: OrderComponent
+      },
+      {
         path: 'ticket/:id',
         loadChildren:() => import('../ticket-info/ticket-info.module').then(m=>m.TicketInfoModule)
       },
-        {
-          path: 'settings',
+      {
+        path: 'settings',
           loadChildren: ()  => import('../settings/settings.module').then(m => m.SettingsModule)
-        },
-      //   {
-      //     path: 'ticket',
-      //     loadChildren: ()  => import('../ticket-info/ticket-info.module').then(m => m.TicketInfoModule)
-      //   },
-      // {
-      //     path: 'order',
-      //     loadChildren: ()  => import('../order/order.module').then(m => m.OrderModule)
-      //   },
+      },
     ]
   },
-
+  {path:'**',
+    redirectTo:'ticket-list'}
 ];
 
 @NgModule({

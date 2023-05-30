@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 
 import {MenubarModule} from "primeng/menubar";
 import { TicketsRoutingModule } from './tickets-routing.module';
@@ -15,6 +15,8 @@ import {CalendarModule} from "primeng/calendar";
 import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
 import {InputTextModule} from "primeng/inputtext";
+import {TableModule} from "primeng/table";
+import {OrderComponent} from "../order/order.component";
 
 
 @NgModule({
@@ -24,7 +26,8 @@ import {InputTextModule} from "primeng/inputtext";
         FooterComponent,
         TicketListComponent,
         AsideComponent,
-        BlocksStyleDirective
+        BlocksStyleDirective,
+        OrderComponent
     ],
   exports: [
     FooterComponent,
@@ -39,8 +42,9 @@ import {InputTextModule} from "primeng/inputtext";
         CalendarModule,
         ToastModule,
         InputTextModule,
-
+        TableModule,
     ],
-  providers: [MessageService],
+  providers: [MessageService,
+              DatePipe],
 })
 export class TicketsModule { }

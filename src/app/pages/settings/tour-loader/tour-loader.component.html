@@ -1,0 +1,53 @@
+<div class="mt-4">
+  <h4>Создание тура</h4>
+  <div class="mt-3 user-info" [formGroup]="tourForm">
+
+    <div class="mt-3">
+      <span class="mx-2 field-title">Название тура</span>
+      <input type="text"
+             class="mt-3"
+             formControlName="name"
+             pInputText/>
+    </div>
+
+    <div class="mt-3">
+      <span class="mx-2 field-title">Описание тура</span>
+      <input type="text"
+             class="mt-3"
+             formControlName="description"
+             pInputText/>
+    </div>
+
+    <div class="mt-3">
+      <span class="mx-2 field-title">Туроператор</span>
+      <input type="text"
+             class="mt-3"
+             formControlName="operator"
+             pInputText/>
+    </div>
+
+    <div class="mt-3">
+      <span class="mx-2 field-title">Стоимость</span>
+      <input type="text"
+             class="mt-3"
+             formControlName="price"
+             pInputText/>
+    </div>
+
+    <div class="mt-3">
+      <span class="mx-2 field-title">Изображение</span>
+      <input type="file"
+             class="mt-3"
+             (change)="selectFile($event)"
+             formControlName="img"
+             pInputText/>
+    </div>
+
+    <div class="mt-4">
+      <button class="btn-success btn" type="submit"
+              (click)="createTour()"
+              [disabled]="!tourForm.valid">Создать тур</button>
+    </div>
+  </div>
+
+</div>

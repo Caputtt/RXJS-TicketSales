@@ -44,13 +44,18 @@
     </button>
   </p-tabPanel>
   <p-tabPanel header='Статистика'>
-
+    <app-statistic></app-statistic>
   </p-tabPanel>
-  <p-tabPanel header='Загрузка тура'>
 
+  <p-tabPanel header='Загрузка тура'>
+    <ng-template pTemplate="content">
+      <app-tour-loader></app-tour-loader>
+    </ng-template>
   </p-tabPanel>
 </p-tabView>
+
 <p-toast position="top-right"></p-toast>
+
 <footer>
   <app-footer></app-footer>
 </footer>

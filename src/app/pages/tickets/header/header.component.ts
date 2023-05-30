@@ -21,13 +21,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-        this.items = this.initMenuItems();
+    this.items = this.initMenuItems();
 
-        this.timerInterval = window.setInterval(() => {
-         this.time = new Date();
-        }, 1000);
+    this.timerInterval = window.setInterval(() => {
+      this.time = new Date();
+    }, 1000);
 
-        this.user = this.userService.getUser();
+    this.user = this.userService.getUser();
   }
 
   ngOnDestroy(): void {

@@ -8,7 +8,6 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {CalendarModule} from "primeng/calendar";
-import {TicketsModule} from "../tickets/tickets.module";
 import {CarouselModule} from "primeng/carousel";
 
 
@@ -23,7 +22,6 @@ import {CarouselModule} from "primeng/carousel";
       InputNumberModule,
       CalendarModule,
       TicketInfoRoutingModule,
-      TicketsModule,
       CarouselModule,
       FormsModule,
       ButtonModule,

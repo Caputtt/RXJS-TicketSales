@@ -7,9 +7,9 @@ import {Router} from "@angular/router";
 })
 export class UserService {
   private user: IUser|null;
-  private token: string|null;
+  private token: string|null=null;
 
-  constructor(private readonly router:Router) { }
+  constructor() { }
 
   getUser(): IUser|null{
     return this.user;
@@ -19,13 +19,14 @@ export class UserService {
     this.user = user;
   }
 
-  setToken(token: string): void {
+
+  setToken (token: string) {
     this.token = token;
   }
 
   getToken(): string | null {
     // if (this.token) {
-      return this.token;
+    return this.token;
     // } else {
     //   const isTokenInStorage = window.localStorage.getItem('userToken');
     //   if (isTokenInStorage) {
@@ -36,28 +37,27 @@ export class UserService {
   setToStore(token: string) {
     window.localStorage.setItem("userToken", token);
   }
+  // getFromStore() {
+  //   return window.localStorage.getItem('userToken');
+  // }
 
-  getFromStore() {
-    return window.localStorage.getItem('userToken');
-  }
-
-  getAllToken(): string | null {
-    if (this.token) {
-      return this.token;
-    } else {
-      return this.getFromStore()
-    }
-  }
-
-
+  // getAllToken(): string | null {
+  //   if (this.token) {
+  //     return this.token;
+  //   } else {
+  //     return this.getFromStore()
+  //   }
+  // }
+  //
+  //
   removeUser(): void {
     this.user = null;
     this.token = null;
     window.localStorage.removeItem('userToken')
 
   }
-
-  updateUser(user: IUser): void{
-    this.user = user;
-  }
+  //
+  // updateUser(user: IUser): void{
+  //   this.user = user;
+  // }
 }

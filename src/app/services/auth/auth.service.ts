@@ -1,36 +1,30 @@
 import { Injectable } from '@angular/core';
 import {IUser} from "../../models/users";
 import {UserService} from "../user/user.service";
+import {AuthRestService} from "../rest/auth-rest.service";
+import {Observable} from "rxjs";
 
+
+export type AuthStatus = {
+  status:boolean;
+  message:string;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private usersStorage: IUser[] = [];
+  public usersStorage: IUser[] = [];
 
 
-  constructor(private userService:UserService) {
+  constructor(private userService:UserService,
+              private authRestService:AuthRestService,) {
     this.checkUsersInStorage();
     this.checkAuthInStorage();
   }
 
-  checkAuthUser(user: IUser): boolean {
-    const isUserExists = this.usersStorage.find((el) => el.login === user.login);
-
-    let isUserSavedInStore = window.localStorage.getItem("user_"+user?.login);
-    let userInStore: IUser = <IUser>{};
-
-    if (isUserSavedInStore) {
-      userInStore = JSON.parse(isUserSavedInStore);
-    }
-
-    if (isUserExists) {
-      return isUserExists.psw === user.psw;
-    } else if (userInStore?.login) {
-      return userInStore.psw === user.psw;
-    }
-    return false;
+  checkUser(user:IUser):Observable<any>{
+    return this.authRestService.checkUserRest(user)
   }
 
   changePassword(oldPas:string,newPas:string): boolean {
@@ -41,20 +35,20 @@ export class AuthService {
     return true;
   }
 
-  setUser(user: IUser): void {
-    const isUserExists = this.usersStorage.find((el) => el.login === user.login);
-    if (!isUserExists && user?.login) {
-      this.usersStorage.push(user);
-    }
 
+  setUser(user:IUser):AuthStatus{
+    if (!this.isUserExist(user) && user?.login){
+      this.usersStorage.push(user);
+      return {status:true,message:'Ok'};
+    }
+    return {status:false,message:'Пользователь зарегистрирован в системе'};
   }
 
-  isUserExists(user: IUser): boolean {
-    const isUserExists = this.usersStorage.find((el) => el.login === user.login);
-    return !!isUserExists;
-    }
+  isUserExist(user:IUser): boolean {
+    return Boolean(this.usersStorage.find(x=>x.login==user.login))
+  }
 
-  saveUserToLocalStorage(user:IUser): void {
+  saveUserToLocalStorage(user:IUser): any {
     const users:IUser[]=[];
     const usersJsonString = window.localStorage.getItem('users');
 
@@ -70,8 +64,8 @@ export class AuthService {
     }
 
     window.localStorage.setItem('users',JSON.stringify(users));
+    return {status: true, message: 'Пользователь успешно сохранен'};
   }
-
   removeUsersFromLocalStorage(): void {
     window.localStorage.removeItem('users');
   }
@@ -95,5 +89,8 @@ export class AuthService {
     if (usersJsonString) {
       this.usersStorage = JSON.parse(usersJsonString) ?? [];
     }
+  }
+  logout() {
+    this.userService.setUser(null);
   }
 }

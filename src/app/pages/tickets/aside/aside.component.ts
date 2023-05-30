@@ -81,7 +81,7 @@ export class AsideComponent implements OnInit {
   }
 
   deleteTours(): void {
-    this.http.delete("http://localhost:3000/tours").subscribe((data: Object) => {
+    this.http.delete("http://localhost:3000/tours/").subscribe((data: Object) => {
       this.ticketService.updateTicketList([]);
     });
   }

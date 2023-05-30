@@ -1,16 +1,16 @@
 <div *ngIf="tickets">
   <div class="search_block">
-<!--    <div>Всего туров: {{ticketsCount}}</div>-->
+    <!--    <div>Всего туров: {{ticketsCount}}</div>-->
     <div>Всего туров: {{tickets.length}}</div>
     <div>Выбран тур: №{{blockDirective.activeElementIndex+1}} </div>
 
     <div>Поиск тура:
-<!--      <input #ticketSearchInput [(ngModel)]="ticketSearchValue" type="text" pInputText   />-->
-    <input
-            placeholder="Введите название"
-           type="text"
-           [(ngModel)]="inputSearch"
-           (input)="searchTickets($event)"/>
+      <!--      <input #ticketSearchInput [(ngModel)]="ticketSearchValue" type="text" pInputText   />-->
+      <input
+        placeholder="Введите название"
+        type="text"
+        [(ngModel)]="inputSearch"
+        (input)="searchTickets($event)"/>
     </div>
 
   </div>
@@ -30,16 +30,16 @@
          (click)="goToTicketInfoPage(ticket)"
          *ngFor="let ticket of ticketsFiltered; let i = index">
 
-        <img src="/assets/img/{{ticket.img}}"  />
+      <img src="/assets/img/{{ticket.img}}"  />
 
       <div class="ticket-title">{{ticket.name}}</div>
       <div class="ticket-price">Стоимость: {{ ticket.price }}</div>
 
-<!--      <ng-container *ngFor="let ticket of ticketsFiltered">-->
-<!--        <div *ngIf="undefinedSearchTickets">-->
-<!--          Результаты не найдены-->
-<!--        </div>-->
-<!--      </ng-container>-->
+      <!--      <ng-container *ngFor="let ticket of ticketsFiltered">-->
+      <!--        <div *ngIf="undefinedSearchTickets">-->
+      <!--          Результаты не найдены-->
+      <!--        </div>-->
+      <!--      </ng-container>-->
     </div>
   </div>
 </div>

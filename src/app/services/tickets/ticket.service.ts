@@ -19,8 +19,8 @@ export class TicketService {
   constructor(private ticketServiceRest: TicketRestService) { }
 
 
-/**Способ преобразования данных, полученных с сервера, до подписки - оператор pipe**/
-    getTickets(): Observable<ITour[]> {
+  /**Способ преобразования данных, полученных с сервера, до подписки - оператор pipe**/
+  getTickets(): Observable<ITour[]> {
     return this.ticketServiceRest.getTickets();
 
   }
@@ -68,7 +68,6 @@ export class TicketService {
 
   sendTour(data: any): Observable<any> {
     return this.ticketServiceRest.sendTour(data);
-
   }
 
   getTicketById(id: string): Observable<ITour> {
@@ -76,6 +75,9 @@ export class TicketService {
   }
 
 
+  createTour(tourData: FormData): Observable<ITour> {
+    console.log(tourData)
+    return this.ticketServiceRest.createTour(tourData);
+  }
 }
-
 

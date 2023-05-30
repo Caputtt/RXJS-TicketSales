@@ -25,12 +25,13 @@ export class AuthorizationComponent implements OnInit, OnDestroy, OnChanges {
   psw: string;
   login: string;
   selectedValue: boolean;
+  isRememberMe:boolean
   cardNumber: string;
   authTextButton: string;
   useUserCard: boolean = false;
 
 
-  constructor(private authService: AuthService,
+  constructor(public authService: AuthService,
               private messageService: MessageService,
               private router: Router,
               public userService: UserService,
@@ -42,7 +43,6 @@ export class AuthorizationComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit(): void {
     this.useUserCard = ConfigService.config.useUserCard;
     this.authTextButton = "Авторизоваться";
-
   }
 
   ngOnDestroy(): void {
@@ -54,41 +54,40 @@ export class AuthorizationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   vipStatusSelected(): void {
-
+    console.log('vipStatusSelected()',event)
   }
 
   onAuth(ev: Event): void {
+
+
     const authUser: IUser = {
-      id: "",
       psw: this.psw,
       login: this.login,
       cardNumber: this.cardNumber
     }
 
-    // if (this.authService.checkAuthUser(authUser)) {
-      // this.userService.setUser(authUser);
-      //
-      //     this.userService.setToken('user-private-token');
-      //
-      //     this.router.navigate(['tickets/ticket-list']);
-      //   } else {
-      //     this.messageService.add({severity:'error', summary: 'Проверьте введенные данные'});
-      //   }
-      // }
-      this.http.post<{access_token: string, id: string}>('http://localhost:3000/users/' +authUser.login, authUser).subscribe((data) => {
-        authUser.id = data.id;
-        this.userService.setUser(authUser);
-        const token: string = data.access_token;
-        this.userService.setToken(token);
-        this.userService.setToStore(token);
-        this.router.navigate(['tickets/ticket-list']);
+    console.log(authUser);
 
-      }, (err: HttpErrorResponse) => {
-        console.log('err', err)
-        const serverError = <ServerError>err.error;
-        this.messageService.add({severity: 'warn', summary:serverError.errorText});
-      });
-    }
+
+    this.http.post<{
+      access_token: string,
+      id: string
+    }>('http://localhost:3000/users/' + authUser.login, authUser).subscribe((data) => {
+      authUser.id = data.id;
+      this.userService.setUser(authUser);
+      const token: string = data.access_token;
+      this.userService.setToken(token);
+      this.userService.setToStore(token);
+
+      this.router.navigate(['tickets/ticket-list']);
+
+    }, (err: HttpErrorResponse) => {
+      const serverError = <ServerError>err.error;
+      this.messageService.add({severity: 'warn', summary: serverError.errorText});
+    });
+  }
+
+
   }
 
 
